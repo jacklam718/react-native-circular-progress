@@ -12,10 +12,10 @@ export default class CircularProgress extends React.Component {
       p.path.push(0, cx + r, cy);
       p.path.push(4, cx, cy, r, startDegree * Math.PI / 180, endDegree * Math.PI / 180, 1);
     } else {
-      // For Android we have to resort to drawing low-level Path primitives, as ART does not support 
+      // For Android we have to resort to drawing low-level Path primitives, as ART does not support
       // arbitrary circle segments. It also does not support strokeDash.
       // Furthermore, the ART implementation seems to be buggy/different than the iOS one.
-      // MoveTo is not needed on Android 
+      // MoveTo is not needed on Android
       p.path.push(4, cx, cy, r, startDegree * Math.PI / 180, (startDegree - endDegree) * Math.PI / 180, 0);
     }
     return p;
@@ -53,9 +53,7 @@ export default class CircularProgress extends React.Component {
                    strokeCap="butt"/>
           </Group>
         </Surface>
-        {
-          children && children(fill)
-        }
+        {children}
       </View>
     )
   }
@@ -69,11 +67,11 @@ CircularProgress.propTypes = {
   tintColor: PropTypes.string,
   backgroundColor: PropTypes.string,
   rotation: PropTypes.number,
-  children: PropTypes.func
+  children: PropTypes.any,
 }
 
 CircularProgress.defaultProps = {
   tintColor: 'black',
   backgroundColor: '#e4e4e4',
-  rotation: 90
+  rotation: 90,
 }
