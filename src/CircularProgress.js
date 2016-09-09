@@ -1,12 +1,11 @@
 import React, { PropTypes } from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
 import { Surface, Shape, Path, Group } from '../../react-native/Libraries/ART/ReactNativeART';
 import MetricsPath from 'art/metrics/path';
 
 export default class CircularProgress extends React.Component {
 
   circlePath(cx, cy, r, startDegree, endDegree) {
-
     let p = Path();
     if (Platform.OS === 'ios') {
       p.path.push(0, cx + r, cy);
@@ -32,30 +31,47 @@ export default class CircularProgress extends React.Component {
   }
 
   render() {
-    const { size, width, tintColor, backgroundColor, style, rotation, children } = this.props;
+    const {
+      showCircleBorder, size, width, tintColor, backgroundColor, style, rotation, children,
+    } = this.props;
     const backgroundPath = this.circlePath(size / 2, size / 2, size / 2 - width / 2, 0, 360);
 
     const fill = this.extractFill(this.props.fill);
     const circlePath = this.circlePath(size / 2, size / 2, size / 2 - width / 2, 0, 360 * fill / 100);
 
+    const circleBorder = showCircleBorder ? (
+      <Shape
+        d={backgroundPath}
+        stroke={backgroundColor}
+        strokeWidth={width}
+      />
+    ) : null;
+
     return (
-      <View style={style}>
+      <View style={[style]}>
         <Surface
           width={size}
-          height={size}>
-          <Group rotation={rotation - 90} originX={size/2} originY={size/2}>
-            <Shape d={backgroundPath}
-                   stroke={backgroundColor}
-                   strokeWidth={width}/>
-            <Shape d={circlePath}
-                   stroke={tintColor}
-                   strokeWidth={width}
-                   strokeCap="butt"/>
+          height={size}
+        >
+          <Group rotation={rotation - 90} originX={size / 2} originY={size / 2}>
+            <Shape
+              d={backgroundPath}
+              stroke={backgroundColor}
+              strokeWidth={width}
+            />
+            <Shape
+              d={circlePath}
+              stroke={tintColor}
+              strokeWidth={width}
+              strokeCap="butt"
+            />
           </Group>
         </Surface>
-        {children}
+        <View style={styles.children}>
+          {children}
+        </View>
       </View>
-    )
+    );
   }
 }
 
@@ -67,11 +83,30 @@ CircularProgress.propTypes = {
   tintColor: PropTypes.string,
   backgroundColor: PropTypes.string,
   rotation: PropTypes.number,
+  showCircleBorder: PropTypes.bool,
   children: PropTypes.any,
-}
+};
 
 CircularProgress.defaultProps = {
   tintColor: 'black',
   backgroundColor: '#e4e4e4',
   rotation: 90,
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    borderWidth: 2,
+    borderColor: 'rgb(237, 59, 59)',
+    borderRadius: 50,
+  },
+  children: {
+    position: 'absolute',
+    top: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+});
