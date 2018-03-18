@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { View, Platform, StyleSheet, ViewPropTypes } from 'react-native';
 import { Surface, Shape, Path, Group } from '../../react-native/Libraries/ART/ReactNativeART';
 import MetricsPath from 'art/metrics/path';
 
@@ -76,7 +76,7 @@ export default class CircularProgress extends React.Component {
 }
 
 CircularProgress.propTypes = {
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   size: PropTypes.number.isRequired,
   fill: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
